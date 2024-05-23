@@ -1,0 +1,70 @@
+.App {
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
+.App-header {
+  background-color: black;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #8c1515; /* Stanford red */
+}
+
+textarea {
+  width: 80%;
+  height: 100px;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #8c1515; /* Stanford red */
+  background-color: #333;
+  color: white;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #8c1515; /* Stanford red */
+  color: white;
+}
+
+button:hover {
+  background-color: #c94c4c; /* Lighter red for hover effect */
+}
+
+#story {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #8c1515; /* Stanford red */
+  border-radius: 8px;
+  background-color: #333;
+  color: white;
+  width: 80%;
+}
+
+#feedback {
+  margin: 20px;
+}
+
+#feedback button {
+  margin: 0 10px;
+}
+
+footer {
+  background-color: black;
+  padding: 20px;
+  color: #8c1515; /* Stanford red */
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
