@@ -96,8 +96,8 @@ try:
     # Train the model
     trainer.train()
 
-    # Save the model
-    trainer.save_model("./gpt2-finetuned-writingprompts")
+    model.save_pretrained("./gpt2-finetuned-writingprompts")
+    tokenizer.save_pretrained("./gpt2-finetuned-writingprompts")
 except KeyboardInterrupt:
     print('KeyboardInterrupt caught during training! Exiting gracefully...')
     sys.exit(0)
