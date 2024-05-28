@@ -17,11 +17,11 @@ model.to(device)
 model.eval()
 
 # Function to generate text
-def generate_text(prompt, max_length=150, num_beams=5, temperature=0.7, top_k=50, top_p=0.95, repetition_penalty=2.0):
+def generate_text(prompt, model, max_length=150, num_beams=5, temperature=0.7, top_k=50, top_p=0.95, repetition_penalty=2.0):
     inputs = tokenizer(prompt, return_tensors='pt').to(device)
     outputs = model.generate(
         inputs.input_ids, 
-        max_length=max_length, 
+        max_length=max_length,
         num_return_sequences=1, 
         num_beams=num_beams,
         temperature=temperature,
