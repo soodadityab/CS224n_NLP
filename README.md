@@ -5,3 +5,4 @@ required installations:
 - numpy
 - gym
 - stable_baselines3
+- openai
