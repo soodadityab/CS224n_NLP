@@ -1,9 +1,11 @@
 import gym
+import shimmy
 from gym import spaces
 import numpy as np
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
 
 class TextGenEnv(gym.Env):
     def __init__(self, model, tokenizer, prompt, user_choice):
@@ -34,9 +36,11 @@ class TextGenEnv(gym.Env):
 def load_model(model_name):
     model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model.config.pad_token_id = model.config.eos_token_id
     return model, tokenizer
 
 def train_ppo(model_name, prompt, user_choice):
+    print("training ppo")
     model, tokenizer = load_model(model_name)
     env = TextGenEnv(model, tokenizer, prompt, user_choice)
     vec_env = DummyVecEnv([lambda: env])
@@ -45,13 +49,14 @@ def train_ppo(model_name, prompt, user_choice):
     ppo_model.learn(total_timesteps=8000)
     ppo_model.save("ppo_textgen")
 
-    model.save_pretrained("./llama3-ppo-finetuned")
-    tokenizer.save_pretrained("./llama3-ppo-finetuned")
+    model.save_pretrained("./gpt2-ppo-finetuned")
+    tokenizer.save_pretrained("./gpt2-ppo-finetuned")
 
     return ppo_model
 
 def query_user_main():
-    model_name = 'meta-llama/Meta-Llama-3-8B'  # Using the provided model name from Hugging Face
+    print("geury user main")
+    model_name = 'gpt2'  # Using the provided model name from Hugging Face
     prompt = "Once upon a time"
 
     model, tokenizer = load_model(model_name)
