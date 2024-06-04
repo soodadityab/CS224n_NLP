@@ -42,14 +42,31 @@ button:hover {
   background-color: #c94c4c; /* Lighter red for hover effect */
 }
 
-#story {
+#story-container {
+  display: flex;
+  justify-content: center;
   margin: 20px;
-  padding: 20px;
-  border: 1px solid #8c1515; /* Stanford red */
-  border-radius: 8px;
-  background-color: #333;
-  color: white;
   width: 80%;
+}
+
+.story-block {
+  background-color: #333;
+  border: 1px solid #8c1515; /* Stanford red */
+  padding: 20px;
+  margin: 10px;
+  width: 45%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  color: white;
+}
+
+.story-block h2 {
+  color: #8c1515;
+}
+
+.story-block p {
+  color: white;
 }
 
 #feedback {
@@ -57,6 +74,7 @@ button:hover {
 }
 
 #feedback button {
+  font-size: 24px;
   margin: 0 10px;
 }
 

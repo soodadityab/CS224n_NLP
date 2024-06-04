@@ -4,15 +4,17 @@ import "./App.css";
 
 export default function App() {
   const [prompt, setPrompt] = useState("");
-  const [story, setStory] = useState("");
+  const [completions, setCompletions] = useState([]);
   const [feedback, setFeedback] = useState(null);
 
   const generateStory = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/generate", {
+      const response = await axios.post("http://127.0.0.1:5000/generate", {
         prompt,
       });
-      setStory(response.data.story);
+      console.log(response.data);
+      setCompletions(response.data.completions);
+      console.log(response.data.completions);
     } catch (error) {
       console.error("Error generating story:", error);
     }
@@ -20,7 +22,7 @@ export default function App() {
 
   const submitFeedback = async (feedbackValue) => {
     try {
-      await axios.post("http://localhost:5000/feedback", {
+      await axios.post("http://127.0.0.1:5000/feedback", {
         feedback: feedbackValue,
       });
       setFeedback(feedbackValue);
@@ -40,8 +42,15 @@ export default function App() {
           onChange={(e) => setPrompt(e.target.value)}
         />
         <button onClick={generateStory}>Generate Story</button>
-        <div id="story">{story}</div>
-        {story && (
+        <div id="story-container">
+          {completions.map((story, index) => (
+            <div key={index} className="story-block">
+              <h2>Completion {index + 1}</h2>
+              <p>{story}</p>
+            </div>
+          ))}
+        </div>
+        {completions.length > 0 && (
           <div id="feedback">
             <button onClick={() => submitFeedback(1)}>👍</button>
             <button onClick={() => submitFeedback(0)}>👎</button>

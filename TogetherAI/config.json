@@ -1,0 +1,9 @@
+{
+  "model": "LLaMA-3-8B",
+  "dataset": "my-dataset",
+  "epochs": 3,
+  "learning_rate": 5e-5,
+  "batch_size": 16,
+  "output_dir": "output"
+}
+
