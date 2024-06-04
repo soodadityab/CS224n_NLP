@@ -7,7 +7,7 @@ import logging
 app = Flask(__name__)
 CORS(app)
 
-API_KEY = "35ba5bebf6288e43fdc8989965161592e3335d7067c772c0c6995cdc0e60cd88"
+API_KEY = ""
 MODEL_NAME = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 TOGETHER_URL = "https://api.together.xyz/v1/chat/completions"
 
