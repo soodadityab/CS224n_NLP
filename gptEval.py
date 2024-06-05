@@ -1,5 +1,5 @@
 # uses gpt4 api to score the quality of stories generated
-
+#scores on five metrics, runs 100 times, outputs mean SD for each model
 from openai import OpenAI
 import os
 import re
