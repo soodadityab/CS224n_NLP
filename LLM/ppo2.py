@@ -33,13 +33,7 @@ class TextGenEnv(gym.Env):
         done = True
         return np.array([1]), reward, done, {}
 
-def load_model(model_name):
-    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model.config.pad_token_id = model.config.eos_token_id
-    return model, tokenizer
-
-def train_ppo(model_name, prompt, user_choice):
+def train(model_name, prompt, user_choice):
     print("training ppo")
     model, tokenizer = load_model(model_name)
     env = TextGenEnv(model, tokenizer, prompt, user_choice)
@@ -54,15 +48,27 @@ def train_ppo(model_name, prompt, user_choice):
 
     return ppo_model
 
-def query_user_main():
-    print("geury user main")
+def load_model(model_name):
+    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model.config.pad_token_id = model.config.eos_token_id
+    return model, tokenizer
+
+
+def prompt(output1, output2):
+    print("Output 1:", output1)
+    print("Output 2:", output2)
+    choice = input("Choose the better output (1 or 2): ")
+    return int(choice) - 1
+
+def query():
     model_name = 'gpt2'
     prompt = "Once upon a time"
 
     model, tokenizer = load_model(model_name)
     output1 = generate_text(prompt, model, tokenizer)
     output2 = generate_text(prompt, model, tokenizer)
-    user_choice = prompt_user(output1, output2)
+    user_choice = prompt(output1, output2)
 
     return model_name, prompt, user_choice
 
@@ -71,15 +77,9 @@ def generate_text(prompt, model, tokenizer):
     outputs = model.generate(**inputs, max_length=50, num_return_sequences=1)
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-def prompt_user(output1, output2):
-    print("Output 1:", output1)
-    print("Output 2:", output2)
-    choice = input("Choose the better output (1 or 2): ")
-    return int(choice) - 1
-
 def main():
-    model_name, prompt, user_choice = query_user_main()
-    ppo_model = train_ppo(model_name, prompt, user_choice)
+    model_name, prompt, user_choice = query()
+    ppo_model = train(model_name, prompt, user_choice)
     print(generate_text(prompt, ppo_model.actor_critic, ppo_model.actor_critic.tokenizer))
 
 if __name__ == "__main__":

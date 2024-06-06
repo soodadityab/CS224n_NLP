@@ -8,8 +8,6 @@ app = Flask(__name__)
 # CORS(app)
 cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 
-
-
 API_KEY = ""
 MODEL_NAME = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 TOGETHER_URL = "https://api.together.xyz/v1/chat/completions"
@@ -95,8 +93,3 @@ def generatePretrained():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-@app.route('/generatePretrained', methods=['POST'])
-def generatePretrained():
-    return jsonify({"completions": "hi"})

@@ -10,7 +10,7 @@ output_directory = './processed_data/'
 os.makedirs(output_directory, exist_ok=False)
 target_data = [output_directory + "train", output_directory + "test", output_directory + "valid"]
 
-word_len = 800
+word_len = 400
 
 for name_id in tqdm(range(len(data))):
     src_file = data[name_id] + ".wp_source"

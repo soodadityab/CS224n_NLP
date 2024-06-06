@@ -27,17 +27,13 @@ export default function App() {
   };
 
   const submitFeedback = (index, value) => {
-    const newFeedback = feedback.map((item, i) => {
+    const userInput = feedback.map((item, i) => {
       if (i === index) {
         return value;
-      } else if (value === 1) {
-        return 0;
-      } else if (value === 0) {
-        return 1;
       }
-      return item;
+      return value === 1 ? 0 : value === 0 ? 1 : item;
     });
-    setFeedback(newFeedback);
+    setFeedback(userInput);
   };
 
   return (
