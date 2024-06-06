@@ -14,7 +14,7 @@ class TextGenEnv(gym.Env):
         self.tokenizer = tokenizer
         self.prompt = prompt
         self.user_choice = user_choice
-        self.action_space = spaces.Discrete(2)  # Two choices
+        self.action_space = spaces.Discrete(2)
         self.observation_space = spaces.Box(low=0, high=1, shape=(1,), dtype=np.float32)
         self.current_output = None
 
