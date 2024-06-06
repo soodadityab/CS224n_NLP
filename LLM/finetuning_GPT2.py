@@ -5,26 +5,37 @@ import signal
 import sys
 import torch
 
+# FUNCTIONS
+# further preprocessing--removes whitespace
+def remove_whitespace(file_path):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    output = []
+    for line in lines:
+        output.append(line.strip())
+    return output
+
+# tokenize datasets
+def tokenize_function(dataset):
+    return tokenizer(dataset['text'], truncation=True, padding='max_length', max_length=128)
+
 # use CUDA for GPUs
 device = "cpu"
 if torch.cuda.is_available():
   device = "cuda"
 print(f"Using: {device}")
 
-# paths to pre-processed data
 train_path = './processed_data/train.wp_combined'
 test_path = './processed_data/test.wp_combined'
 
-# keyboard interrupt func
 def signal_handler(sig, frame):
-    print('KeyboardInterrupt! Exiting gracefully.')
+    print('KeyboardInterrupt')
     sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
 
 # get tokenizer. this is from HuggingFace
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
-
 
 # specify padding--ensures all sentences in a batch are of same length
 if tokenizer.pad_token is None:
@@ -35,22 +46,12 @@ model = GPT2LMHeadModel.from_pretrained('gpt2')
 model.resize_token_embeddings(len(tokenizer))
 model.to(device) 
 
-# further preprocessing--removes whitespace
-def load_text_file(file_path):
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
-    return [line.strip() for line in lines]
-
-train_data = load_text_file(train_path)
-test_data = load_text_file(test_path)
+train_data = remove_whitespace(train_path)
+test_data = remove_whitespace(test_path)
 
 # load train/test sets post preprocessing
 train_dataset = load_dataset('text', data_files={'train': train_path})['train']
 test_dataset = load_dataset('text', data_files={'test': test_path})['test']
-
-# tokenize datasets
-def tokenize_function(dataset):
-    return tokenizer(dataset['text'], truncation=True, padding='max_length', max_length=128)
 
 try:
     train_dataset = train_dataset.map(tokenize_function, batched=True, num_proc=4)
@@ -102,7 +103,7 @@ try:
     model.save_pretrained("./gpt2-finetuned-writingprompts")
     tokenizer.save_pretrained("./gpt2-finetuned-writingprompts")
 except KeyboardInterrupt:
-    print('KeyboardInterrupt (training)! Exiting gracefully.')
+    print('KeyboardInterrupt (training)')
     sys.exit(0)
 
-print("Fine-tuning complete and saved.")
+print("fine-tuning is complete!")

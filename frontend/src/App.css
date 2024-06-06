@@ -11,8 +11,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: #8c1515; /* Stanford red */
+  font-size: calc(11px + 2vmin);
+  color: #8c1515;
 }
 
 textarea {
@@ -22,8 +22,8 @@ textarea {
   padding: 10px;
   font-size: 1rem;
   border-radius: 8px;
-  border: 1px solid #8c1515; /* Stanford red */
-  background-color: #333;
+  border: 1px solid #891010;
+  background-color: #292828;
   color: white;
 }
 
@@ -34,12 +34,12 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  background-color: #8c1515; /* Stanford red */
+  background-color: #921212;
   color: white;
 }
 
 button:hover {
-  background-color: #c94c4c; /* Lighter red for hover effect */
+  background-color: #c94c4c;
 }
 
 #story-container {
@@ -50,8 +50,8 @@ button:hover {
 }
 
 .story-block {
-  background-color: #333;
-  border: 1px solid #8c1515; /* Stanford red */
+  background-color: #383737;
+  border: 1px solid #911313;
   padding: 20px;
   margin: 10px;
   width: 45%;
@@ -59,30 +59,47 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
   color: white;
+  position: relative;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .story-block h2 {
-  color: #8c1515;
+  color: #9d1919;
+  text-align: center;
 }
 
 .story-block p {
   color: white;
+  margin-bottom: 0;
 }
 
-#feedback {
-  margin: 20px;
+.feedback-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
-#feedback button {
-  font-size: 24px;
-  margin: 0 10px;
+.feedback-buttons button {
+  font-size: 26px;
+  margin: 0 5px;
 }
 
 footer {
   background-color: black;
   padding: 20px;
-  color: #8c1515; /* Stanford red */
-  position: fixed;
+  color: #910f0f;
   width: 100%;
-  bottom: 0;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.selected {
+  background-color: #47a54a;
+  color: white;
+}
+
+.selected.down {
+  background-color: #e94034;
+  color: white;
 }

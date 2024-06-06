@@ -56,7 +56,7 @@ def train_ppo(model_name, prompt, user_choice):
 
 def query_user_main():
     print("geury user main")
-    model_name = 'gpt2'  # Using the provided model name from Hugging Face
+    model_name = 'gpt2'
     prompt = "Once upon a time"
 
     model, tokenizer = load_model(model_name)

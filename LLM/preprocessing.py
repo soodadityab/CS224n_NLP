@@ -1,30 +1,41 @@
 import os
 from tqdm import tqdm
 
-# Define paths
-DIR = "./writingPrompts/"  # Path to the directory containing your source and target files
-data = [DIR + "train", DIR + "test", DIR + "valid"]
+# directory with all the data files
+input_directory = "./writingPrompts/"
+# there are three variations: train, test, valid
+data = [input_directory + "train", input_directory + "test", input_directory + "valid"]
 
-TARGET_DIR = './processed_data/'  # Directory to save processed data
-os.makedirs(TARGET_DIR, exist_ok=True)
-target_data = [TARGET_DIR + "train", TARGET_DIR + "test", TARGET_DIR + "valid"]
+output_directory = './processed_data/'
+os.makedirs(output_directory, exist_ok=False)
+target_data = [output_directory + "train", output_directory + "test", output_directory + "valid"]
 
-NUM_WORDS = 300  # Adjust as needed, originally 1000
+word_len = 800
 
 for name_id in tqdm(range(len(data))):
-    with open(data[name_id] + ".wp_source") as fp, open(data[name_id] + ".wp_target") as ft:
-        prompts = fp.readlines()
-        stories = ft.readlines()
+    src_file = data[name_id] + ".wp_source"
+    tgt_file = data[name_id] + ".wp_target"
 
-        assert len(prompts) == len(stories)
+    with open(src_file) as sf:
+        prompts = sf.readlines()
+    
+    with open(tgt_file) as tf:
+        stories = tf.readlines()
 
-        new_stories = [
-            prompts[i].strip() + " <endprompts> " + " ".join(stories[i].split()[:NUM_WORDS])
-            for i in range(len(prompts))
-        ]
+    if len(prompts) != len(stories):
+        raise AssertionError("number of prompts don't align with number of stories")
+    
+    out_stories = []
+    for i in range(len(prompts)):
+        prompt = prompts[i].strip()
+        story = stories[i].split()
+        truncated_story = story[:word_len]
+        combined = prompt + " <endprompts> " + " ".join(truncated_story)
+        out_stories.append(combined)
 
-        with open(target_data[name_id] + ".wp_combined", "w") as o:
-            for line in new_stories:
-                o.write(line.strip() + "\n")
-        print('Finished writing', target_data[name_id] + ".wp_combined")
+    output_filename = target_data[name_id] + ".wp_combined"
+    with open(output_filename, "w") as o:
+        for line in out_stories:
+            o.write(line.strip() + "\n")
 
+    print('finished writing', output_filename)

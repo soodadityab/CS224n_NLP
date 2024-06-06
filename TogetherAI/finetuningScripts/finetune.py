@@ -11,7 +11,7 @@ resp = client.fine_tuning.create(
   n_epochs=3,
   n_checkpoints=1,
   batch_size=4,
-  learning_rate=3e-5
+  learning_rate=5e-5
 )
 
 fine_tune_id = resp.id

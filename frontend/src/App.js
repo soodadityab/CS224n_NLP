@@ -5,7 +5,7 @@ import "./App.css";
 export default function App() {
   const [prompt, setPrompt] = useState("");
   const [completions, setCompletions] = useState([]);
-  const [feedback, setFeedback] = useState(null);
+  const [feedback, setFeedback] = useState([]);
 
   const generateStory = async () => {
     try {
@@ -14,21 +14,30 @@ export default function App() {
       });
       console.log(response.data);
       setCompletions(response.data.completions);
-      console.log(response.data.completions);
+      setFeedback(Array(response.data.completions.length).fill(null));
     } catch (error) {
-      console.error("Error generating story:", error);
+      console.error("Could not generate story:", error);
     }
   };
 
-  const submitFeedback = async (feedbackValue) => {
-    try {
-      await axios.post("http://127.0.0.1:5000/feedback", {
-        feedback: feedbackValue,
-      });
-      setFeedback(feedbackValue);
-    } catch (error) {
-      console.error("Error submitting feedback:", error);
-    }
+  const resetAll = () => {
+    setPrompt("");
+    setCompletions([]);
+    setFeedback([]);
+  };
+
+  const submitFeedback = (index, value) => {
+    const newFeedback = feedback.map((item, i) => {
+      if (i === index) {
+        return value;
+      } else if (value === 1) {
+        return 0;
+      } else if (value === 0) {
+        return 1;
+      }
+      return item;
+    });
+    setFeedback(newFeedback);
   };
 
   return (
@@ -39,26 +48,37 @@ export default function App() {
           id="prompt"
           placeholder="Enter your prompt here"
           value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
+          onChange={(item) => setPrompt(item.target.value)}
         />
         <button onClick={generateStory}>Generate Story</button>
+        <button onClick={resetAll}>Reset</button>
         <div id="story-container">
-          {completions.map((story, index) => (
-            <div key={index} className="story-block">
-              <h2>Completion {index + 1}</h2>
+          {completions.map((story, counter) => (
+            <div key={counter} className="story-block">
+              <div className="feedback-buttons">
+                <button
+                  className={feedback[counter] === 1 ? "selected" : ""}
+                  onClick={() => submitFeedback(counter, 1)}
+                >
+                  👍
+                </button>
+                <button
+                  className={feedback[counter] === 0 ? "selected" : ""}
+                  onClick={() => submitFeedback(counter, 0)}
+                >
+                  👎
+                </button>
+              </div>
+              <h2>Completion {counter + 1}</h2>
               <p>{story}</p>
+              {feedback[counter] !== null && (
+                <p>
+                  Feedback submitted: {feedback[counter] === 1 ? "👍" : "👎"}
+                </p>
+              )}
             </div>
           ))}
         </div>
-        {completions.length > 0 && (
-          <div id="feedback">
-            <button onClick={() => submitFeedback(1)}>👍</button>
-            <button onClick={() => submitFeedback(0)}>👎</button>
-          </div>
-        )}
-        {feedback !== null && (
-          <p>Feedback submitted: {feedback === 1 ? "👍" : "👎"}</p>
-        )}
       </header>
       <footer>
         <p>Developed by: Aditya, Aniket, and Ayaan</p>
