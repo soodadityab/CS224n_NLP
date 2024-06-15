@@ -1,5 +1,5 @@
 # CS224n_NLP
-Final CS224n project: using reinforcement learning (DPO) and transformers (GPT) finetuning for interactive story telling.
+Final CS224n project: using reinforcement learning (PPO) and transformers (GPT) finetuning for interactive story telling.
 
 Due to nascent developments in Natural Language Processing (NLP), transformer-based large language models (LLMs) have become increasingly adept at generating human-like text to perform tasks like neural machine translation. However, these models fall short in their ability to generate cohesive and engaging stories. Creative storytelling demands not only syntactic precision but also a subtle understanding of narrative structures, character development, and original creativity—elements that current models struggle to emulate.
 
